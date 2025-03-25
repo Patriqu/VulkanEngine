@@ -11,4 +11,4 @@ test: Main
 	./main
 
 clean:
-	rm -f Main
+	rm -f main
