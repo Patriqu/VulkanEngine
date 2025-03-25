@@ -22,10 +22,6 @@ jobs:
         sudo apt-get install -y libglfw3-dev
         sudo apt-get install -y libglm-dev
         sudo apt-get install -y xvfb
-    - name: Start Xvfb
-      run: |
-        /usr/bin/Xvfb :99 -screen 0 1280x720x24 &
-        export DISPLAY=:99
     - name: Configure with Meson
       run: meson setup builddir
     - name: Build with Ninja
@@ -33,13 +29,14 @@ jobs:
     - name: Run executable
       run: |
         export DISPLAY=:99
+        /usr/bin/Xvfb :99 -screen 0 1280x720x24 &
+        timeout 5s
         ./builddir/VulkanEngine
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.6.2
       with:
         name: VulkanEngine
         path: builddir/VulkanEngine
-        # The desired behavior if no files are found using the provided path.
         #warn: Output a warning but do not fail the action
         #error: Fail the action with an error message
         #ignore: Do not output any warnings or errors, the action does not fail
