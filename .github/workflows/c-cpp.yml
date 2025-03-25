@@ -12,15 +12,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    #- name: configure
-    #  run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-pip ninja-build
+        pip3 install meson
+        sudo apt-get install -y libvulkan-dev vulkan-utils
+        sudo apt-get install -y libglfw3-dev
+        sudo apt-get install -y libglm-dev
+    - name: Configure with Meson
+      run: meson setup builddir
+    - name: Build with Ninja
+      run: ninja -C builddir
+    - name: Run executable
+      run: ./builddir/VulkanEngine
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.6.2
       with:
