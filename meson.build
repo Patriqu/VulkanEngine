@@ -5,7 +5,7 @@ project('VulkanEngine', 'cpp',
 glfw = dependency('glfw3')
 vulkan = dependency('vulkan')
 
-src = files('main.cpp')
+src = files('src/VulkanApplication.cpp')
 
 executable('VulkanEngine', src, dependencies: [glfw, vulkan] #,
 #  include_directories: include_directories('include')
